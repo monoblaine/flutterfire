@@ -17,6 +17,15 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def miscProperties = new Properties()
+def miscPropertiesFile = rootProject.file("misc.properties")
+if (miscPropertiesFile.exists()) {
+    miscPropertiesFile.withReader("UTF-8") { reader ->
+        miscProperties.load(reader)
+    }
+}
+def firebaseMessagingVersion=miscProperties.getProperty("firebase_messaging_version")
+
 def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
 if (flutterVersionCode == null) {
     flutterVersionCode = "1"
@@ -59,6 +68,13 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
+    }
+
+    configurations.all {
+      resolutionStrategy.dependencySubstitution {
+        substitute module("com.google.firebase:firebase-messaging") using module("com.google.firebase:firebase-messaging:${firebaseMessagingVersion}-defused")
+        substitute module("com.google.firebase:firebase-messaging-ktx") using module("com.google.firebase:firebase-messaging-ktx:${firebaseMessagingVersion}-defused")
+      }
     }
 }
 
