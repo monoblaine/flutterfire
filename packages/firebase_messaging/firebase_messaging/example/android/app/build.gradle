@@ -73,7 +73,6 @@ android {
     configurations.all {
       resolutionStrategy.dependencySubstitution {
         substitute module("com.google.firebase:firebase-messaging") using module("com.google.firebase:firebase-messaging:${firebaseMessagingVersion}-defused")
-        substitute module("com.google.firebase:firebase-messaging-ktx") using module("com.google.firebase:firebase-messaging-ktx:${firebaseMessagingVersion}-defused")
       }
     }
 }
